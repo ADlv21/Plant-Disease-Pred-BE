@@ -1,4 +1,5 @@
 # importing libraries
+import re
 import os
 from keras.models import load_model
 from keras_preprocessing.image import load_img,img_to_array
@@ -82,7 +83,7 @@ def output(location):
     y_class = answer.argmax(axis=-1)
     y = " ".join(str(x) for x in y_class)
     y = int(y)
-    res = lab[y]
+    res = classes[y]
     return res
 
 @app.route('/', methods=['POST', 'GET'])
@@ -102,7 +103,11 @@ def upload():
             print("The file does not exist")
         
         print('File Saved File Saved \n===================================================')
-        data = "{data: "+y+" }"
+        a = y.split('___')
+        data={
+            "plant": a[0],
+            "disease": a[1]
+        }
         return jsonify(data)
 
     if request.method == 'GET':
