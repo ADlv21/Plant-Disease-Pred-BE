@@ -1,5 +1,4 @@
 # importing libraries
-import re
 import os
 from keras.models import load_model
 from keras_preprocessing.image import load_img,img_to_array
@@ -9,7 +8,7 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # List of Classes to proide to prediction function
 classes = [
@@ -111,8 +110,11 @@ def upload():
         return jsonify(data)
 
     if request.method == 'GET':
-        return "Hello World!!!"
+        return {
+            "message":"Flask app is running on port 5000",
+            "response":200
+        }
 
 # Driver Funtion
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    app.run(host='0.0.0.0',debug=True, port=5000)
