@@ -5,10 +5,10 @@ from keras_preprocessing.image import load_img,img_to_array
 import numpy as np
 from flask import Flask, jsonify, request
 from werkzeug.utils import secure_filename
-from flask_cors import CORS
+#from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+#cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 # List of Classes to proide to prediction function
 classes = [
@@ -52,23 +52,6 @@ classes = [
     'Tomato___healthy'
 ]
 
-
-# Doggie Breeds
-gcjcjvhvkv = """lab = [
- 'Afghan', 'African Wild Dog', 'Airedale', 'American Hairless', 'American Spaniel', 
- 'Basenji', 'Basset', 'Beagle', 'Bearded Collie', 'Bermaise',  'Bichon Frise',  'Blenheim',
-     'Bloodhound',  'Bluetick',  'Border Collie',  'Borzoi',  'Boston Terrier',  'Boxer', 
-     'Bull Mastiff',  'Bull Terrier',  'Bulldog',  'Cairn',  'Chihuahua',  'Chinese Crested', 
-     'Chow',  'Clumber',  'Cockapoo',  'Cocker',  'Collie',  'Corgi', 'Coyote',  'Dalmation',
-     'Dhole', 'Dingo', 'Doberman', 'Elk Hound', 'French Bulldog', 'German Sheperd', 
-     'Golden Retriever', 'Great Dane', 'Great Perenees', 'Greyhound', 'Groenendael',
-     'Irish Spaniel', 'Irish Wolfhound', 'Japanese Spaniel', 'Komondor', 'Labradoodle', 
-     'Labrador', 'Lhasa', 'Malinois', 'Maltese', 'Mex Hairless', 'Newfoundland', 
-     'Pekinese', 'Pit Bull', 'Pomeranian', 'Poodle', 'Pug', 'Rhodesian', 'Rottweiler', 
-     'Saint Bernard', 'Schnauzer', 'Scotch Terrier', 'Shar_Pei', 'Shiba Inu', 'Shih-Tzu', 
-     'Siberian Husky', 'Vizsla', 'Yorkie'
-    ]"""
-
 # Load Model
 model1 = load_model('model.h5',compile=True)
 
@@ -89,6 +72,7 @@ def output(location):
 def upload():
     if request.method == 'POST':
         f = request.files['File']
+        print(f)
         print('===================================================\n')
         print('Secure File          '+secure_filename(f.filename))
         fs = secure_filename(f.filename)
@@ -101,12 +85,13 @@ def upload():
         else:
             print("The file does not exist")
         
-        print('File Saved File Saved \n===================================================')
+        print('File Saved \n===================================================')
         a = y.split('___')
         data={
             "plant": a[0],
             "disease": a[1]
         }
+        print(data)
         return jsonify(data)
 
     if request.method == 'GET':
@@ -117,4 +102,4 @@ def upload():
 
 # Driver Funtion
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
